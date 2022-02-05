@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task TCP_server(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'edu.oswego.cs.gmaldona.TCP.Server'
+}
+
+task TCP_client(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'edu.oswego.cs.gmaldona.TCP.Client'
+}
+
+task UDP_server(type: JavaExec) {
+
+}
+
+task UDP_client(type: JavaExec) {
+
+}
