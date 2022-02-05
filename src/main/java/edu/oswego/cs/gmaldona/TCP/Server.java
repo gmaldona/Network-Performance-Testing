@@ -29,7 +29,7 @@ public class Server {
 
                 String payload = listenForPayload();
                 if (checkForShutdown(payload)) { socket.close() ; break ; };
-                System.out.println("Message from Client: " + payload);
+                //System.out.println("Message from Client: " + payload);
                 socket.close();
             }
             serverSocket.close();

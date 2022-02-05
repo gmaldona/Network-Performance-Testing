@@ -19,7 +19,7 @@ public class Client {
     }
 
     public void sendMessage(String payload) throws IOException {
-        System.out.println("Message To Server: " + payload);
+        //System.out.println("Message To Server: " + payload);
         out.println(payload);
     }
 
