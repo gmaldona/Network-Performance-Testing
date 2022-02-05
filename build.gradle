@@ -23,15 +23,11 @@ task TCP_server(type: JavaExec) {
     main = 'edu.oswego.cs.gmaldona.TCP.Server'
 }
 
-task TCP_client(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'edu.oswego.cs.gmaldona.TCP.Client'
-}
-
 task UDP_server(type: JavaExec) {
 
 }
 
-task UDP_client(type: JavaExec) {
-
+task Benchmark(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'edu.oswego.cs.gmaldona.util.Benchmark'
 }

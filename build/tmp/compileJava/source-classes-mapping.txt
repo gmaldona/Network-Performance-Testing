@@ -3,6 +3,9 @@ edu/oswego/cs/gmaldona/TCP/Server.java
  edu.oswego.cs.gmaldona.TCP.Server$Connection
 edu/oswego/cs/gmaldona/util/Constants.java
  edu.oswego.cs.gmaldona.util.Constants
+edu/oswego/cs/gmaldona/util/RandomPayload.java
+ edu.oswego.cs.gmaldona.util.RandomPayload
 edu/oswego/cs/gmaldona/TCP/Client.java
  edu.oswego.cs.gmaldona.TCP.Client
- edu.oswego.cs.gmaldona.TCP.Client$Connection
+edu/oswego/cs/gmaldona/util/Benchmark.java
+ edu.oswego.cs.gmaldona.util.Benchmark
