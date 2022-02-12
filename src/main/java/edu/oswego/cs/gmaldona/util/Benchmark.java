@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Benchmark {
 
     public static void main(String[] args) throws IOException {
-        TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet Size Of: " + key + ": " + value + " seconds latency") );
+        TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet Size Of " + key + ":\t" + value + "\tseconds latency") );
         terminateServer();
     }
 
@@ -42,7 +42,8 @@ public class Benchmark {
                     String payload = NetworkingTools.generateRandomPayload(payloadLength);
                     Client client = new Client();
                     long startBenchmarkTime = System.nanoTime();
-                    client.sendMessage(payload);
+                    if (client.sendMessage(payload)) { System.out.println("Message was sent, echoed, and validated\n"); }
+                    else { System.out.println("Message was sent, echoed but validation failed.\n"); }
                     double RTT = (System.nanoTime() - startBenchmarkTime) / 1e9;
                     trialResults[trial] = RTT;
 

@@ -8,8 +8,7 @@ import java.net.*;
 public class Server {
 
     public static void main(String[] args) throws IOException {
-        Connection serverConnection = new Connection();
-        System.out.println("Client Connection.");
+        new Connection();
 
     }
 
@@ -24,12 +23,13 @@ public class Server {
             serverSocket = new ServerSocket(Constants.PORT);
             for (;;) {
                 socket = serverSocket.accept();
+                System.out.println("Client Connection.");
                 out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 String payload = listenForPayload();
                 if (checkForShutdown(payload)) { socket.close() ; break ; };
-                //System.out.println("Message from Client: " + payload);
+                out.println(payload);
                 socket.close();
             }
             serverSocket.close();

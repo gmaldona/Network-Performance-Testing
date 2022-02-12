@@ -12,16 +12,22 @@ public class Client {
     private PrintWriter out;
     private BufferedReader in;
 
-    public Client() throws IOException {
-        socket = new Socket(NetworkingTools.SERVER_HOST, Constants.PORT);
-        out    = new PrintWriter(socket.getOutputStream(), true);
-        in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    public Client() {
+        try {
+            socket = new Socket(NetworkingTools.SERVER_HOST, Constants.PORT);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (Exception e) {e.printStackTrace();}
     }
 
-    public void sendMessage(String payload) throws IOException {
-        //System.out.println("Message To Server: " + payload);
+    public boolean sendMessage(String payload) throws IOException {
+        //System.out.println("Sending payload:  " + payload);
         out.println(payload);
+        String echoedPayload = in.readLine();
+        //System.out.println("Received payload: " + payload);
+        return payload.equals(echoedPayload);
     }
+
 
     public Socket getSocket() {
         return socket;
