@@ -14,8 +14,9 @@ public class Benchmark {
         //System.out.println("\nLatency Measurements");
         //TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
         //terminateTCPServer();
-        averageLatency(ClientType.TCP).forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
-        throughput(ClientType.TCP).forEach((key, value) -> System.out.println(key + ":\t" + value + "\tbps"));
+        averageLatency(ClientType.UDP).forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
+        throughput(ClientType.UDP).forEach((key, value) -> System.out.println(key + ":\t" + value + "\tbps"));
+
         ;
     }
 
@@ -48,7 +49,7 @@ public class Benchmark {
         for (int payloadLength : Constants.PAYLOAD_LENGTHS) {
             for (int trial = 0; trial < Constants.TRIALS; trial++) {
                 String payload = NetworkingTools.generateRandomPayload(payloadLength);
-                Client client = clientType.equals(ClientType.TCP) ? new TCPClient() : new UDPClient(); 
+                Client client = clientType.equals(ClientType.TCP) ? new TCPClient() : new UDPClient();
                 client.sendMessage("~Latency");
                 Thread.sleep(500);
                 long startBenchmarkTime = System.nanoTime();

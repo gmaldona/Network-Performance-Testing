@@ -15,7 +15,6 @@ public class TCPClient extends Client {
 
     public TCPClient() {
         try {
-            System.out.println("-------======= Starting TCP Server -------=======");
             socket = new Socket(NetworkingTools.SERVER_HOST, Constants.PORT);
             System.out.println("Sending Packets to: " + Constants.HOST);
             out = new PrintWriter(socket.getOutputStream(), true);
