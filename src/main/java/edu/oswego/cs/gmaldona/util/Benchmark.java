@@ -14,18 +14,19 @@ public class Benchmark {
         //System.out.println("\nLatency Measurements");
         //TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
         //terminateTCPServer();
-        averageLatency(new TCPClient()).forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
-        throughput(new TCPClient()).forEach((key, value) -> System.out.println(key + ":\t" + value + "\tbps"));
+        averageLatency(ClientType.TCP).forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
+        throughput(ClientType.TCP).forEach((key, value) -> System.out.println(key + ":\t" + value + "\tbps"));
         ;
     }
 
-    public static HashMap<String, Double> throughput(Client client) throws IOException, InterruptedException {
+    public static HashMap<String, Double> throughput(ClientType clientType) throws IOException, InterruptedException {
         HashMap<String, Double> benchmarkResults = new HashMap<>();
         HashMap<Integer, Integer> testingPackets = new HashMap<>();
         testingPackets.put(1024, 1024);
         testingPackets.put(2048, 512);
         testingPackets.put(4096, 256);
         for (Integer round : testingPackets.keySet()) {
+            Client client = clientType.equals(ClientType.TCP) ? new TCPClient() : new UDPClient();
             client.sendMessage("~Throughput");
             Thread.sleep(500);
             String payload = NetworkingTools.generateRandomPayload(testingPackets.get(round));
@@ -40,13 +41,14 @@ public class Benchmark {
         return benchmarkResults;
     }
 
-    public static HashMap<Integer, Double> averageLatency(Client client) throws IOException, InterruptedException {
+    public static HashMap<Integer, Double> averageLatency(ClientType clientType) throws IOException, InterruptedException {
         double[] trialResults = new double[Constants.TRIALS];
         HashMap<Integer, Double> benchmarkResults = new HashMap<>();
 
         for (int payloadLength : Constants.PAYLOAD_LENGTHS) {
             for (int trial = 0; trial < Constants.TRIALS; trial++) {
                 String payload = NetworkingTools.generateRandomPayload(payloadLength);
+                Client client = clientType.equals(ClientType.TCP) ? new TCPClient() : new UDPClient(); 
                 client.sendMessage("~Latency");
                 Thread.sleep(500);
                 long startBenchmarkTime = System.nanoTime();
@@ -68,6 +70,8 @@ public class Benchmark {
         }
         return sum / trials.length;
     }
+
+    private enum ClientType { TCP, UDP }
 }
 
 
