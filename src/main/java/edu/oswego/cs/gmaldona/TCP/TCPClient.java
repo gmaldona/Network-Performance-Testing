@@ -23,7 +23,6 @@ public class TCPClient extends Client {
     }
 
     public void sendMessage(String payload) throws IOException {
-        //System.out.println("Sending payload:  " + payload);
         out.println(payload);
     }
 
@@ -37,15 +36,9 @@ public class TCPClient extends Client {
     public boolean sendMessageForLatency(String payload) throws IOException {
         out.println(payload);
         String echoedPayload = in.readLine();
-        //System.out.println("echoed" + echoedPayload);
         return payload.equals(echoedPayload);
     }
-
-
-    public Socket getSocket() {
-        return socket;
-    }
-
+    
     public void close() throws IOException {
         out.close();
         in.close();
