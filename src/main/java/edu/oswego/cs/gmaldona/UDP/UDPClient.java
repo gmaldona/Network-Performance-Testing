@@ -12,7 +12,8 @@ public class UDPClient {
 
     public UDPClient() throws UnknownHostException, SocketException {
         socket = new DatagramSocket();
-        address = InetAddress.getByName("127.0.0.1");
+        address = InetAddress.getByName(Constants.HOST);
+        System.out.println("Sending Packets to: " + address.getHostAddress());
     }
 
     public String sendEcho(String msg) throws IOException {
