@@ -14,6 +14,7 @@ public class Benchmark {
         //System.out.println("\nLatency Measurements");
         //TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
         //terminateTCPServer();
+        averageLatency(new TCPClient()).forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
         throughput(new TCPClient()).forEach((key, value) -> System.out.println(key + ":\t" + value + "\tbps"));
         ;
     }
