@@ -31,15 +31,11 @@ public class Server {
                 packet = new DatagramPacket(buffer, buffer.length, address, port);
                 String received = new String(packet.getData(), 0, packet.getLength());
 
-                if (received.contains("end")) {
-                    break;
-                }
+                if (received.contains("~exit")) { break; }
                 try {
                     System.out.println("Message from client: " + received);
                     socket.send(packet);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                } catch (IOException e) { e.printStackTrace(); }
                 Arrays.fill(buffer, (byte) 0);
             }
             socket.close();

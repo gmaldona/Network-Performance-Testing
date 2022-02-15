@@ -1,12 +1,13 @@
 package edu.oswego.cs.gmaldona.TCP;
 
+import edu.oswego.cs.gmaldona.util.Client;
 import edu.oswego.cs.gmaldona.util.Constants;
 import edu.oswego.cs.gmaldona.util.NetworkingTools;
 
 import java.net.*;
 import java.io.*;
 
-public class TCPClient {
+public class TCPClient extends Client {
 
     private Socket socket;
     private PrintWriter out;
@@ -25,10 +26,11 @@ public class TCPClient {
         out.println(payload);
     }
 
-    public void sendMessageForThroughput(String payload) throws IOException {
+    public boolean sendMessageForThroughput(String payload) throws IOException {
         out.println(payload);
         String receivedPayload = "";
         while (!receivedPayload.equals("Received")) {receivedPayload = in.readLine(); }
+        return true;
     }
 
     public boolean sendMessageForLatency(String payload) throws IOException {
