@@ -13,7 +13,7 @@ public class UDPClient {
     public UDPClient() throws UnknownHostException, SocketException {
         socket = new DatagramSocket();
         address = InetAddress.getByName(Constants.HOST);
-        System.out.println("Sending Packets to: " + address.getHostAddress());
+        System.out.println("Sending Packets to: " + Constants.HOST);
     }
 
     public String sendEcho(String msg) throws IOException {
