@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class Server {
 
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) throws IOException {
         new Connection();
     }
 
@@ -16,26 +16,24 @@ public class Server {
         private DatagramSocket socket;
         private final byte[] buffer = new byte[256];
 
-        public Connection() throws SocketException {
+        public Connection() throws IOException {
             System.out.println("-------======= Starting UDP Server -------=======");
             System.out.println(this);
             socket = new DatagramSocket(Constants.PORT);
             for (;;) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                try {
-                    socket.receive(packet);
-                } catch (IOException e) {e.printStackTrace();}
+                try { socket.receive(packet); }
+                catch (IOException e) {e.printStackTrace();}
 
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
                 packet = new DatagramPacket(buffer, buffer.length, address, port);
-                String received = new String(packet.getData(), 0, packet.getLength());
+                String testType = new String(packet.getData(), 0, packet.getLength());
 
-                if (received.contains("~exit")) { break; }
-                try {
-                    System.out.println("Message from client: " + received);
-                    socket.send(packet);
-                } catch (IOException e) { e.printStackTrace(); }
+                if (testType.contains("~Throughput")) throughputTest();
+                else if (testType.contains("~Latency") ) latencyTest();
+                else if (testType.contains("~exit")) { break; }
+
                 Arrays.fill(buffer, (byte) 0);
             }
             socket.close();
@@ -43,11 +41,40 @@ public class Server {
 
         public void latencyTest() throws IOException {
             System.out.println("-------======= Latency Testing ... -------=======");
+            Arrays.fill(buffer, (byte) 0);
+            while (buffer[0] == (byte) 0) {
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                try { socket.receive(packet); }
+                catch (IOException e) { e.printStackTrace(); }
 
+                InetAddress address = packet.getAddress();
+                int port = packet.getPort();
+                packet = new DatagramPacket(buffer, buffer.length, address, port);
+                String payload = new String(packet.getData(), 0, packet.getLength());
+
+                try { socket.send(packet); }
+                catch (IOException e) {e.printStackTrace();}
+
+            }
         }
         public void throughputTest() throws IOException {
             System.out.println("-------======= Throughput Testing ... -------=======");
+            Arrays.fill(buffer, (byte) 0);
+            String bufferStr = new String(buffer, 0, buffer.length);
+            while (! bufferStr.contains("~stop")) {
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                try { socket.receive(packet); }
+                catch (IOException e) { e.printStackTrace(); }
 
+                InetAddress address = packet.getAddress();
+                int port = packet.getPort();
+
+                String newBuff = "Received";
+                packet = new DatagramPacket(newBuff.getBytes(), newBuff.length(), address, port);
+
+                try { socket.send(packet); }
+                catch (IOException e) {e.printStackTrace();}
+            }
         }
 
         public String toString() {
