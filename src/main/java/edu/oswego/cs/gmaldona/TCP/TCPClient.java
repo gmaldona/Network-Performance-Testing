@@ -6,13 +6,13 @@ import edu.oswego.cs.gmaldona.util.NetworkingTools;
 import java.net.*;
 import java.io.*;
 
-public class Client {
+public class TCPClient {
 
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
 
-    public Client() {
+    public TCPClient() {
         try {
             socket = new Socket(NetworkingTools.SERVER_HOST, Constants.PORT);
             out = new PrintWriter(socket.getOutputStream(), true);

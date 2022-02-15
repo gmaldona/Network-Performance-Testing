@@ -1,6 +1,7 @@
 package edu.oswego.cs.gmaldona.util;
 
-import edu.oswego.cs.gmaldona.TCP.Client;
+import edu.oswego.cs.gmaldona.TCP.TCPClient;
+import edu.oswego.cs.gmaldona.UDP.UDPClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,11 +9,13 @@ import java.util.HashMap;
 public class Benchmark {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("Throughput Measurements");
-        TCPBenchmark.throughput().forEach( (key, value) ->System.out.println(key + ":\t" + value + "\tbps" ) );
-        System.out.println("\nLatency Measurements");
-        TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
-        terminateServer();
+        //System.out.println("Throughput Measurements");
+        //TCPBenchmark.throughput().forEach( (key, value) ->System.out.println(key + ":\t" + value + "\tbps" ) );
+        //System.out.println("\nLatency Measurements");
+        //TCPBenchmark.averageLatency().forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
+        //terminateTCPServer();
+
+        UDPBenchmark.echo("Hello from client");
     }
 
     private static class TCPBenchmark {
@@ -24,7 +27,7 @@ public class Benchmark {
             testingPackets.put(2048, 512);
             testingPackets.put(4096, 256);
             for (Integer round : testingPackets.keySet()) {
-                Client client = new Client();
+                TCPClient client = new TCPClient();
                 client.sendMessage("~Throughput");
                 Thread.sleep(500);
                 String payload = NetworkingTools.generateRandomPayload(testingPackets.get(round));
@@ -47,7 +50,7 @@ public class Benchmark {
             for (int payloadLength : Constants.PAYLOAD_LENGTHS) {
                 for (int trial = 0; trial < Constants.TRIALS; trial++) {
                     String payload = NetworkingTools.generateRandomPayload(payloadLength);
-                    Client client = new Client();
+                    TCPClient client = new TCPClient();
                     client.sendMessage("~Latency");
                     Thread.sleep(500);
                     long startBenchmarkTime = System.nanoTime();
@@ -73,11 +76,16 @@ public class Benchmark {
     }
 
     private static class UDPBenchmark {
-
+        public static void echo(String message) throws IOException {
+            System.out.println("Starting Client");
+            UDPClient c = new UDPClient();
+            System.out.println(c.sendEcho(message));
+            c.close();
+        }
     }
 
-    private static void terminateServer() throws IOException {
-        Client client = new Client();
+    private static void terminateTCPServer() throws IOException {
+        TCPClient client = new TCPClient();
         client.sendMessage("~exit");
     }
 

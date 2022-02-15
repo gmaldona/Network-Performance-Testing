@@ -24,7 +24,8 @@ task TCP_server(type: JavaExec) {
 }
 
 task UDP_server(type: JavaExec) {
-
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'edu.oswego.cs.gmaldona.UDP.Server'
 }
 
 task Benchmark(type: JavaExec) {

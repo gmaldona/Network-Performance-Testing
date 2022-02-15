@@ -9,16 +9,18 @@ import java.net.*;
 public class Server {
 
     public static void main(String[] args) throws IOException {
-        new C();
+        new Connection();
     }
 
-    private static class C {
+    private static class Connection {
         private ServerSocket serverSocket;
         private Socket socket;
         private PrintWriter out;
         private BufferedReader in;
 
-        public C() throws IOException {
+        public Connection() throws IOException {
+            System.out.println("-------======= Starting TCP Server -------=======");
+            System.out.println(this);
             for (;;) {
                 serverSocket = new ServerSocket(Constants.PORT);
                 socket = serverSocket.accept();
@@ -49,69 +51,6 @@ public class Server {
                 out.println("Received");
             }
         }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private static class Connection {
-        private ServerSocket serverSocket;
-        private Socket socket;
-        private PrintWriter out;
-        private BufferedReader in;
-
-        public Connection() throws IOException {
-            System.out.println(this);
-            serverSocket = new ServerSocket(Constants.PORT);
-            for (;;) {
-                System.out.println("starting server");
-                socket = serverSocket.accept();
-                System.out.println("Client Connection.");
-                out = new PrintWriter(socket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                String testingType = listenForPayload();
-
-                if (testingType.equals("~Throughput")) {
-
-                } else if (testingType.equals("~Latency")) {
-                   latencyTest();
-                }
-
-                if (checkForShutdown("~exit")) { System.out.println("EXITING");socket.close() ; break ; };
-            }
-            serverSocket.close();
-        }
-
-//        public double throughputTest() {
-//
-//        }
-
-        public void latencyTest() throws IOException {
-
-            System.out.println("Latency Test");
-            String payload = "";
-            while (payload.equals("")) { payload = in.readLine(); }
-            out.println(payload);
-
-        }
-
-        public String listenForPayload() throws IOException {
-            String payload = "";
-            while (payload.equals("")) {
-                payload = in.readLine();
-            }
-            return payload;
-        }
 
         public String toString() {
             try {
@@ -121,10 +60,5 @@ public class Server {
                 return "Server on PORT=" + Constants.PORT;
             }
         }
-
-        public boolean checkForShutdown(String payload) {
-            return payload.equals("~exit");
-        }
     }
-
 }
