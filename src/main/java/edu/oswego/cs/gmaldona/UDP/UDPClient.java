@@ -12,6 +12,7 @@ public class UDPClient extends Client {
     private byte[] buffer;
 
     public UDPClient() throws UnknownHostException, SocketException {
+        System.out.println("-------======= Starting UDP Client -------=======");
         socket = new DatagramSocket();
         address = InetAddress.getByName(Constants.HOST);
         System.out.println("Sending Packets to: " + Constants.HOST);
