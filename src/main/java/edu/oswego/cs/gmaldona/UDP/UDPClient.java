@@ -16,16 +16,19 @@ public class UDPClient extends Client {
         address = InetAddress.getByName(Constants.HOST);
     }
 
+    @Override
     public void sendMessage(String payload) throws IOException {
         buffer = payload.getBytes();
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, Constants.PORT);
         socket.send(packet);
     }
 
+    @Override
     public boolean sendMessageForThroughput(String payload) throws IOException {
         return sendAndReceive(payload).contains("Received");
     }
 
+    @Override
     public boolean sendMessageForLatency(String payload) throws IOException {
         return sendAndReceive(payload).equals(payload);
     }
@@ -39,6 +42,7 @@ public class UDPClient extends Client {
         return new String(packet.getData(), 0, packet.getLength());
     }
 
+    @Override
     public void close() throws IOException {socket.close();}
 
 }

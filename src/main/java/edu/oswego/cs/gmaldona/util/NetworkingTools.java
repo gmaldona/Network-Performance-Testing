@@ -1,6 +1,8 @@
 package edu.oswego.cs.gmaldona.util;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -66,6 +68,27 @@ public class NetworkingTools {
 
         }
         return encryptedString.toString() ;
+    }
+
+    public static void saveData(Benchmark.Protocols protocol, String clientHostname, String serverHostname,
+                                HashMap<String, Double> throughputResults, HashMap<Integer, Double> latencyResults) {
+        String throughputFilename = String.format("%s Throughput for %s to %s", protocol, clientHostname, serverHostname);
+        String latencyFilename = String.format("%s - %s %s Throughput", clientHostname, serverHostname, protocol);
+
+        try {
+            StringBuilder sb = new StringBuilder();
+            for (String key : throughputResults.keySet().stream().sorted().collect(Collectors.toList())) {
+                sb.append(key).append(",").append(throughputResults.get(key)).append("\n");
+            }
+
+            File throughputData = new File("data/", throughputFilename);
+            FileWriter writer = new FileWriter(throughputData);
+            System.out.println(sb.toString());
+            writer.write(sb.toString());
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String XORDecrypt(String payload) {

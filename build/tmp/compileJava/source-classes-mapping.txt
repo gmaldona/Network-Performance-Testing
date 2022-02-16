@@ -1,19 +1,19 @@
-edu/oswego/cs/gmaldona/util/NetworkingTools.java
- edu.oswego.cs.gmaldona.util.NetworkingTools
-edu/oswego/cs/gmaldona/TCP/Server.java
- edu.oswego.cs.gmaldona.TCP.Server
- edu.oswego.cs.gmaldona.TCP.Server$Connection
-edu/oswego/cs/gmaldona/util/Constants.java
- edu.oswego.cs.gmaldona.util.Constants
-edu/oswego/cs/gmaldona/util/Client.java
- edu.oswego.cs.gmaldona.util.Client
-edu/oswego/cs/gmaldona/TCP/TCPClient.java
- edu.oswego.cs.gmaldona.TCP.TCPClient
-edu/oswego/cs/gmaldona/UDP/UDPClient.java
- edu.oswego.cs.gmaldona.UDP.UDPClient
 edu/oswego/cs/gmaldona/UDP/Server.java
  edu.oswego.cs.gmaldona.UDP.Server
  edu.oswego.cs.gmaldona.UDP.Server$Connection
+edu/oswego/cs/gmaldona/TCP/Server.java
+ edu.oswego.cs.gmaldona.TCP.Server
+ edu.oswego.cs.gmaldona.TCP.Server$Connection
+edu/oswego/cs/gmaldona/util/Client.java
+ edu.oswego.cs.gmaldona.util.Client
+edu/oswego/cs/gmaldona/UDP/UDPClient.java
+ edu.oswego.cs.gmaldona.UDP.UDPClient
+edu/oswego/cs/gmaldona/util/NetworkingTools.java
+ edu.oswego.cs.gmaldona.util.NetworkingTools
+edu/oswego/cs/gmaldona/util/Constants.java
+ edu.oswego.cs.gmaldona.util.Constants
+edu/oswego/cs/gmaldona/TCP/TCPClient.java
+ edu.oswego.cs.gmaldona.TCP.TCPClient
 edu/oswego/cs/gmaldona/util/Benchmark.java
  edu.oswego.cs.gmaldona.util.Benchmark
- edu.oswego.cs.gmaldona.util.Benchmark$ClientType
+ edu.oswego.cs.gmaldona.util.Benchmark$Protocols

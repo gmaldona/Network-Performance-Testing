@@ -22,10 +22,12 @@ public class TCPClient extends Client {
         } catch (Exception e) {e.printStackTrace();}
     }
 
+    @Override
     public void sendMessage(String payload) throws IOException {
         out.println(payload);
     }
 
+    @Override
     public boolean sendMessageForThroughput(String payload) throws IOException {
         out.println(payload);
         String receivedPayload = "";
@@ -33,12 +35,14 @@ public class TCPClient extends Client {
         return true;
     }
 
+    @Override
     public boolean sendMessageForLatency(String payload) throws IOException {
         out.println(payload);
         String echoedPayload = in.readLine();
         return payload.equals(echoedPayload);
     }
-    
+
+    @Override
     public void close() throws IOException {
         out.close();
         in.close();
