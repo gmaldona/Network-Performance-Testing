@@ -16,7 +16,6 @@ public class TCPClient extends Client {
     public TCPClient() {
         try {
             socket = new Socket(NetworkingTools.SERVER_HOST, Constants.PORT);
-            System.out.println("Sending Packets to: " + Constants.HOST);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception e) {e.printStackTrace();}
@@ -37,9 +36,16 @@ public class TCPClient extends Client {
 
     @Override
     public boolean sendMessageForLatency(String payload) throws IOException {
+
         out.println(payload);
         String echoedPayload = in.readLine();
-        return payload.equals(echoedPayload);
+        String decryptedPayload = new String(NetworkingTools.XOREncrypt(echoedPayload));
+
+        if (Constants.XOR_DEBUG && payload.length()==8) {
+            System.out.println("Message sent:\t\t" + payload);
+            System.out.println("Message received:\t" + decryptedPayload + "\n");
+        }
+        return payload.equals(decryptedPayload);
     }
 
     @Override

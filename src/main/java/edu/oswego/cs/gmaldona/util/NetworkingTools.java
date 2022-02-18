@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,7 +15,7 @@ public class NetworkingTools {
     private static final String PRIVATE_ENCRYPTION_KEY = networkingConf.getOrDefault("KEY", "");
     public static final String SERVER_HOST = networkingConf.getOrDefault("SERVER", "127.0.0.1");
 
-    private static HashMap<String, String> getEncryptionKey() {
+    public static HashMap<String, String> getEncryptionKey() {
         HashMap<String, String> config = new HashMap<>();
         try {
             File file = new File("netconf.txt");
@@ -31,19 +28,6 @@ public class NetworkingTools {
         return config;
     }
 
-    public static String convertPayloadToBinary(String payload) {
-        StringBuilder sb = new StringBuilder();
-        for (int index = 0; index < payload.length(); index++ ) {
-            StringBuilder binary = new StringBuilder();
-            int binaryLength = Integer.toBinaryString(payload.charAt(index)).length();
-            if (binaryLength < XOR_ENCODING_LENGTH) {
-                for (int fillZeros = 0; fillZeros < XOR_ENCODING_LENGTH - binaryLength; fillZeros++) { binary.append("0"); }
-            }
-            sb.append(binary.append(Integer.toBinaryString(payload.charAt(index))).toString());
-        }
-        return sb.toString();
-    }
-
     public static String generateRandomPayload(int payloadLength) {
         StringBuilder sb = new StringBuilder();
         for (int bytes = 1; bytes <= payloadLength; bytes++) {
@@ -52,8 +36,9 @@ public class NetworkingTools {
         return sb.toString();
     }
 
-    public static String XOREncrypt(String payload) {
-        StringBuilder encryptedString = new StringBuilder();
+    public static byte[] XOREncrypt(String payload) {
+
+        ArrayList<Byte> encryptedBytes = new ArrayList<>();
         int XORCount = payload.length() / XOR_ENCODING_LENGTH;
         byte[] keyBytes = PRIVATE_ENCRYPTION_KEY.getBytes(StandardCharsets.UTF_8);
         for (int encryptionCount = 0; encryptionCount < XORCount; encryptionCount++) {
@@ -63,17 +48,22 @@ public class NetworkingTools {
                 encryptedPayload[i] = (byte) (payloadBytes[i] ^ keyBytes[i]);
             }
             for (byte b : encryptedPayload) {
-                encryptedString.append((char) b);
+                encryptedBytes.add(b);
             }
-
         }
-        return encryptedString.toString() ;
+
+        byte[] byteBuffer = new byte[encryptedBytes.size()];
+        for (int b = 0; b < encryptedBytes.size(); b++) {
+            byteBuffer[b] = encryptedBytes.get(b);
+        }
+
+        return byteBuffer;
     }
 
     public static void saveData(Benchmark.Protocols protocol, String clientHostname, String serverHostname,
                                 HashMap<String, Double> throughputResults, HashMap<Integer, Double> latencyResults) {
-        String throughputFilename = String.format("%s Throughput for %s to %s", protocol, clientHostname, serverHostname);
-        String latencyFilename = String.format("%s - %s %s Throughput", clientHostname, serverHostname, protocol);
+        String throughputFilename = String.format("%s Throughput for %s to %s.csv", protocol, clientHostname, serverHostname);
+        String latencyFilename = String.format("%s Latency for %s to %s.csv", protocol, clientHostname, serverHostname);
 
         try {
             StringBuilder sb = new StringBuilder();
@@ -83,7 +73,20 @@ public class NetworkingTools {
 
             File throughputData = new File("data/", throughputFilename);
             FileWriter writer = new FileWriter(throughputData);
-            System.out.println(sb.toString());
+            writer.write(sb.toString());
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            StringBuilder sb = new StringBuilder();
+            for (Integer key : latencyResults.keySet().stream().sorted().collect(Collectors.toList())) {
+                sb.append(key).append(",").append(latencyResults.get(key)).append("\n");
+            }
+
+            File latencyData = new File("data/", latencyFilename);
+            FileWriter writer = new FileWriter(latencyData);
             writer.write(sb.toString());
             writer.close();
         } catch (Exception e) {

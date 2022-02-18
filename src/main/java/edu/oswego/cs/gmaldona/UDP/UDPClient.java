@@ -2,6 +2,7 @@ package edu.oswego.cs.gmaldona.UDP;
 
 import edu.oswego.cs.gmaldona.util.Client;
 import edu.oswego.cs.gmaldona.util.Constants;
+import edu.oswego.cs.gmaldona.util.NetworkingTools;
 
 import java.net.*;
 import java.io.*;
@@ -39,7 +40,7 @@ public class UDPClient extends Client {
         socket.send(packet);
         packet = new DatagramPacket(buffer, buffer.length);
         socket.receive(packet);
-        return new String(packet.getData(), 0, packet.getLength());
+        return new String(NetworkingTools.XOREncrypt(new String(packet.getData(), 0, packet.getLength())));
     }
 
     @Override

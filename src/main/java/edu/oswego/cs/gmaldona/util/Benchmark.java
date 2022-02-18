@@ -5,6 +5,7 @@ import edu.oswego.cs.gmaldona.UDP.UDPClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class Benchmark {
@@ -41,11 +42,12 @@ public class Benchmark {
             String payload = NetworkingTools.generateRandomPayload(testingPackets.get(round));
             long startTime = System.nanoTime();
             for (int trial = 0; trial < round; trial++) {
-                client.sendMessageForThroughput(payload);
+                String encryptedPayload = new String(NetworkingTools.XOREncrypt(payload));
+                client.sendMessageForThroughput(encryptedPayload);
             }
             client.sendMessage("~stop");
             double elapsedTime = (System.nanoTime() - startTime) / 1e9;
-            benchmarkResults.put(round + "X" + testingPackets.get(round), (payload.length() * 8) / elapsedTime);
+            benchmarkResults.put(round + "X" + testingPackets.get(round), ( round * (payload.length() * 8) ) / elapsedTime);
         }
         return benchmarkResults;
     }
@@ -57,11 +59,13 @@ public class Benchmark {
         for (int payloadLength : Constants.PAYLOAD_LENGTHS) {
             for (int trial = 0; trial < Constants.TRIALS; trial++) {
                 String payload = NetworkingTools.generateRandomPayload(payloadLength);
+                String encryptedPayload = new String(NetworkingTools.XOREncrypt(payload));
+                if (Constants.XOR_DEBUG && payload.length()==8) { System.out.println("Unencrypted Payload:\t" + payload); }
                 Client client = protocols.equals(Benchmark.Protocols.TCP) ? new TCPClient() : new UDPClient();
                 client.sendMessage("~Latency");
                 Thread.sleep(500);
                 long startBenchmarkTime = System.nanoTime();
-                client.sendMessageForLatency(payload);
+                client.sendMessageForLatency(encryptedPayload);
                 double RTT = (System.nanoTime() - startBenchmarkTime) / 1e9;
                 trialResults[trial] = RTT;
 
