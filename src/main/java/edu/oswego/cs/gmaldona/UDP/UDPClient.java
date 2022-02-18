@@ -31,6 +31,12 @@ public class UDPClient extends Client {
 
     @Override
     public boolean sendMessageForLatency(String payload) throws IOException {
+        String echoedPayload = sendAndReceive(payload);
+        String decryptedPayload = NetworkingTools.XORDecrypt(echoedPayload);
+        if (Constants.XOR_DEBUG && payload.length()==8) {
+            System.out.println("Message sent:\t\t" + payload);
+            System.out.println("Message received:\t" + decryptedPayload + "\n");
+        }
         return sendAndReceive(payload).equals(payload);
     }
 

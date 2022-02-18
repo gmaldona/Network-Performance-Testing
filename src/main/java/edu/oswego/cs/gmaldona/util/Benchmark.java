@@ -43,6 +43,7 @@ public class Benchmark {
             long startTime = System.nanoTime();
             for (int trial = 0; trial < round; trial++) {
                 String encryptedPayload = new String(NetworkingTools.XOREncrypt(payload));
+                if (Constants.XOR_DEBUG&&payload.length()==8) { System.out.println("Unencrypted Payload:\t" + payload); }
                 client.sendMessageForThroughput(encryptedPayload);
             }
             client.sendMessage("~stop");
