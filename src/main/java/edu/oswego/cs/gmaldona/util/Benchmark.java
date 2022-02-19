@@ -5,7 +5,7 @@ import edu.oswego.cs.gmaldona.UDP.UDPClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class Benchmark {
@@ -21,9 +21,9 @@ public class Benchmark {
         HashMap<Integer, Double> latencyMeasurements = averageLatency(protocols);
         HashMap<String, Double> throughputMeasurements = throughput(protocols);
 
-        latencyMeasurements.forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + value) );
+        latencyMeasurements.forEach( (key, value) -> System.out.println("Packet size of " + key + ":\tWith a latency (seconds) of\t" + Constants.dflat.format(value)) );
         Thread.sleep(1000);
-        throughputMeasurements.forEach((key, value) -> System.out.println(key + ":\t" + value + "\tbps"));
+        throughputMeasurements.forEach((key, value) -> System.out.println(key + ":\t" + Constants.dfthru.format(value) + "\tbps"));
 
         NetworkingTools.saveData(Protocols.TCP, InetAddress.getLocalHost().getHostAddress(), Constants.HOST, throughputMeasurements, latencyMeasurements);
 
@@ -43,7 +43,7 @@ public class Benchmark {
             long startTime = System.nanoTime();
             for (int trial = 0; trial < round; trial++) {
                 String encryptedPayload = new String(NetworkingTools.XOREncrypt(payload));
-                if (Constants.XOR_DEBUG&&payload.length()==8) { System.out.println("Unencrypted Payload:\t" + payload); }
+                if (Constants.XOR_DEBUG && payload.length()==8) { System.out.println("Unencrypted Payload:\t" + payload); }
                 client.sendMessageForThroughput(encryptedPayload);
             }
             client.sendMessage("~stop");

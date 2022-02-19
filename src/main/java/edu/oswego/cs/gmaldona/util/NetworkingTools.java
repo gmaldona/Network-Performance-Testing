@@ -68,7 +68,7 @@ public class NetworkingTools {
         try {
             StringBuilder sb = new StringBuilder();
             for (String key : throughputResults.keySet().stream().sorted().collect(Collectors.toList())) {
-                sb.append(key).append(",").append(throughputResults.get(key)).append("\n");
+                sb.append(key).append(",").append(Constants.dfthru.format(throughputResults.get(key))).append("\n");
             }
 
             File throughputData = new File("data/", throughputFilename);
@@ -82,7 +82,7 @@ public class NetworkingTools {
         try {
             StringBuilder sb = new StringBuilder();
             for (Integer key : latencyResults.keySet().stream().sorted().collect(Collectors.toList())) {
-                sb.append(key).append(",").append(latencyResults.get(key)).append("\n");
+                sb.append(key).append(",").append(Constants.dflat.format(latencyResults.get(key))).append("\n");
             }
 
             File latencyData = new File("data/", latencyFilename);

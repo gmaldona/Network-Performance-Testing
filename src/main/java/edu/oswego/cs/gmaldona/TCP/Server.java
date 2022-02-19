@@ -40,6 +40,7 @@ public class Server {
             System.out.println("-------======= Latency Testing ... -------=======");
             String payload = "";
             while (payload.equals("")) { payload = in.readLine(); }
+            if (Constants.XOR_DEBUG&&payload.length()==8) { System.out.println(payload); }
             out.println(payload);
             socket.close();
         }
@@ -47,6 +48,7 @@ public class Server {
             System.out.println("-------======= Throughput Testing ... -------=======");
             for (;;) {
                 String payload = in.readLine();
+                if (Constants.XOR_DEBUG&&payload.length()==8) { System.out.println(payload); }
                 if (payload.equals("~stop")) break;
                 out.println("Received");
             }

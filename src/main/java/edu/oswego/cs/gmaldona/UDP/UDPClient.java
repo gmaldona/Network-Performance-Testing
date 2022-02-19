@@ -33,11 +33,7 @@ public class UDPClient extends Client {
     public boolean sendMessageForLatency(String payload) throws IOException {
         String echoedPayload = sendAndReceive(payload);
         String decryptedPayload = NetworkingTools.XORDecrypt(echoedPayload);
-        if (Constants.XOR_DEBUG && payload.length()==8) {
-            System.out.println("Message sent:\t\t" + payload);
-            System.out.println("Message received:\t" + decryptedPayload + "\n");
-        }
-        return sendAndReceive(payload).equals(payload);
+        return payload.equals(decryptedPayload);
     }
 
     private String sendAndReceive(String payload) throws IOException {
@@ -46,6 +42,11 @@ public class UDPClient extends Client {
         socket.send(packet);
         packet = new DatagramPacket(buffer, buffer.length);
         socket.receive(packet);
+        if (Constants.XOR_DEBUG  && payload.length()==8) {
+            System.out.println("Message sent:\t\t" + payload);
+            System.out.println("Message received:\t" + payload);
+            System.out.println("Message decrypted: \t" + new String(NetworkingTools.XOREncrypt(payload)) +"\n");
+        }
         return new String(NetworkingTools.XOREncrypt(new String(packet.getData(), 0, packet.getLength())));
     }
 

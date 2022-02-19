@@ -51,7 +51,7 @@ public class Server {
                 int port = packet.getPort();
                 packet = new DatagramPacket(buffer, buffer.length, address, port);
                 String payload = new String(packet.getData(), 0, packet.getLength());
-
+                if (Constants.XOR_DEBUG && payload.length()==8) { System.out.println(payload); }
                 try { socket.send(packet); }
                 catch (IOException e) {e.printStackTrace();}
 
@@ -71,7 +71,7 @@ public class Server {
 
                 String newBuff = "Received";
                 packet = new DatagramPacket(newBuff.getBytes(), newBuff.length(), address, port);
-
+                if (Constants.XOR_DEBUG&&bufferStr.length()==8) { System.out.println(bufferStr); }
                 try { socket.send(packet); }
                 catch (IOException e) {e.printStackTrace();}
             }
