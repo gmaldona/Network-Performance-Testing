@@ -1,13 +1,26 @@
 <html>
     <body>
-        <div style="background:lightgrey">
+        <div>
         <center>
         <h1>CSC 445: Computer Networks</h1>
         <h2> Latency/Throughput TCP versus UDP Connections</h2>
         <b> Gregory Maldonado - gmaldona@oswego.edu</b>
         </center>
         </div>
-        
+        <br>
+        The goal of this project is to measure throughput and latency between two hosts. Throughput is defined as how much information is delivered over a certain amount of time. This quantity is
+        usually measured in bits per second (bps). On the other hand, in the case of this project, latency is defined to be the amount of time for a packet to be delivered, read by the server, and echoed
+        back to the client, which is being measured in seconds. Before data is sent to the server, packets are encrypted using XOR encryption by a private key stored on both the client and server side. This 
+        allows packets to be sent between the client and server securely; without the private key, any packets interceptions will be a string of random characters. <br> <br>
+        The two protocols being used in this project is TCP and UDP. TCP is a connection oriented protocol that requires a handshake before packet transmission. For the demostration of TCP connections, java
+        Sockets were used within this project. One of the hosts would start a "server" while the other host would start a "client". Once the handshake is done specified on a port, packets can be sent across the network.
+        UDP is the complete opposite! Using the UDP protocol, a "client" can send packets without an initial handshake. Once the "client" sends a packet, they will never know if the packet ever actually got
+        sent to the destination. The only way for the "client" to know if the packet got sent and receieved by the "server" is for the "server" to respond back with another UDP message of its own. If not careful, 
+        the "client" could wait forever for the "server" to respond back with a message.<br > <br>
+        The source code for this project can be found on <a href="https://github.com/gmaldona/Network-Performance-Testing">GitHub</a> :)<br>
+        <br>
+        The following graphs show measurements of throughput and latency using both TCP and UDP protocols across two different networks (within the oswego computer science department and outside the oswego computer science department
+        to a server within the department). 
         <!-- Group Starts Here -->
         <h2>Throughput Measurements </h2>
         <hr>
