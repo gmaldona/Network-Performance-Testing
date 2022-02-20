@@ -25,7 +25,7 @@ public class Benchmark {
         Thread.sleep(1000);
         throughputMeasurements.forEach((key, value) -> System.out.println(key + ":\t" + Constants.dfthru.format(value) + "\tbps"));
 
-        NetworkingTools.saveData(Protocols.TCP, InetAddress.getLocalHost().getHostAddress(), Constants.HOST, throughputMeasurements, latencyMeasurements);
+        NetworkingTools.saveData(protocols, InetAddress.getLocalHost().getHostAddress(), Constants.HOST, throughputMeasurements, latencyMeasurements);
 
     }
 

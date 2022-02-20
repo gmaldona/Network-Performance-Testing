@@ -1,0 +1,12 @@
+.group {
+    float: left;
+    width: 33.33%;
+    padding: 50px;
+  }
+  
+  /* Clear floats after image containers */
+  .col::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
